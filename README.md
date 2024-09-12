@@ -33,6 +33,8 @@ Follow these steps to get the project up and running:
 
     ```sh
     docker compose exec backend composer install
+
+    docker compose exec backend php artisan passport:install
     ```
 
 4. **Install Frontend Dependencies**
