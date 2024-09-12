@@ -28,3 +28,26 @@ export const getUser = async () => {
     Authorization: `Bearer ${getToken("authToken")}`,
   });
 };
+
+/**
+ * Updates the current user's data.
+ * @param {object} userData - The user data to update.
+ * @returns {Promise<object>} - The response data from the API.
+ */
+export const updateUser = async (userData) => {
+  return apiClient("/user/update", {}, userData, "POST", {
+    Authorization: `Bearer ${getToken("authToken")}`,
+  });
+};
+
+/**
+ * Resets the user's password.
+ * @param {object} passwordData - The current and new password data.
+ * @returns {Promise<object>} - The response data from the API.
+ */
+export const resetPassword = async (passwordData) => {
+  return apiClient("/user/reset-password", {}, passwordData, "POST", {
+    Authorization: `Bearer ${getToken("authToken")}`,
+  });
+};
+

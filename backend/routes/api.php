@@ -15,9 +15,13 @@ use App\Http\Controllers\Api;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('register', [Api\UserController::class, 'register']);
 Route::post('login', [Api\UserController::class, 'login']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::post('/user/update', [Api\UserController::class, 'updateUser']);
+    Route::post('/user/reset-password', [Api\UserController::class, 'resetPassword']);
+});
