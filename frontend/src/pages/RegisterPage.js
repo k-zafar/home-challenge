@@ -1,6 +1,7 @@
+import Cookies from "js-cookie";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { registerUser } from "../api/auth";
+import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Card, Container } from "react-bootstrap";
 
 const RegisterPage = () => {
@@ -9,6 +10,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [password_confirmation, setConfirmPassword] = useState("");
 
+  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,8 +24,15 @@ const RegisterPage = () => {
 
     try {
       // Call the API to register the user
-      await registerUser({ name, email, password, password_confirmation });
+      const response = await registerUser({
+        name,
+        email,
+        password,
+        password_confirmation,
+      });
       setSuccess("Registration successful!");
+      Cookies.set("authToken", response.token, { expires: 1 });
+      navigate("/");
     } catch (error) {
       // Check if the error has validation details
       if (error.details && Object.keys(error.details).length) {

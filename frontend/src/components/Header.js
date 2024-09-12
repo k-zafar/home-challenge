@@ -1,8 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Nav, Button, Container } from "react-bootstrap";
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  // Handle logout
+  const handleLogout = () => {
+    Cookies.remove("authToken");
+    navigate("/login");
+  };
+
+  const isAuthenticated = Cookies.get("authToken") !== undefined;
+
   return (
     <Navbar bg="dark" expand="lg" data-bs-theme="dark">
       <Container>
@@ -22,14 +33,25 @@ const Header = () => {
               About Us
             </Nav.Link>
           </Nav>
-          <Button
-            variant="outline-primary"
-            as={Link}
-            to="/login"
-            className="ms-auto"
-          >
-            Login
-          </Button>
+          {isAuthenticated ? (
+            <div className="ms-auto d-flex align-items-center">
+              <Button as={Link} to="/user/1/settings" className="me-2">
+                Account Settings
+              </Button>
+              <Button variant="outline-primary" onClick={handleLogout}>
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <Button
+              variant="outline-primary"
+              as={Link}
+              to="/login"
+              className="ms-auto"
+            >
+              Login
+            </Button>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>
