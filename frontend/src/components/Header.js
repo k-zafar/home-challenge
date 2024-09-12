@@ -1,18 +1,30 @@
-import React from "react";
-import Cookies from "js-cookie";
+import { getUser } from "../api/auth";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Navbar, Nav, Button, Container } from "react-bootstrap";
+import { getToken, removeToken } from "../utils/tokenUtils";
+import { Navbar, Nav, Button, Container, Dropdown } from "react-bootstrap";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
 
-  // Handle logout
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const data = await getUser();
+        setUserData(data || {});
+      } catch (err) {}
+    };
+
+    fetchUserData();
+  }, []);
+
   const handleLogout = () => {
-    Cookies.remove("authToken");
+    removeToken("authToken");
     navigate("/login");
   };
 
-  const isAuthenticated = Cookies.get("authToken") !== undefined;
+  const isAuthenticated = getToken("authToken") !== undefined;
 
   return (
     <Navbar bg="dark" expand="lg" data-bs-theme="dark">
@@ -33,14 +45,21 @@ const Header = () => {
               About Us
             </Nav.Link>
           </Nav>
-          {isAuthenticated ? (
+          {(isAuthenticated && userData) ? (
             <div className="ms-auto d-flex align-items-center">
-              <Button as={Link} to="/user/1/settings" className="me-2">
-                Account Settings
-              </Button>
-              <Button variant="outline-primary" onClick={handleLogout}>
-                Logout
-              </Button>
+              <Dropdown>
+                <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
+                  {userData.name}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item as={Link} to={`/user/${userData.id}/settings`}>
+                    Account Settings
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handleLogout}>
+                    Logout
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
           ) : (
             <Button

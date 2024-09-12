@@ -6,13 +6,15 @@ const BASE_URL = "http://localhost:8000/api";
  * @param {object} [params] - Optional query parameters for GET requests.
  * @param {object} [body] - Optional request body for POST requests.
  * @param {string} [method] - HTTP method (GET, POST, PUT, DELETE).
+ * @param {object} [headers] - Optional headers for the request.
  * @returns {Promise<object>} - The response data from the API.
  */
 const apiClient = async (
   endpoint,
   params = {},
   body = null,
-  method = "GET"
+  method = "GET",
+  headers = {}
 ) => {
   try {
     // Construct the URL with query parameters if provided
@@ -28,13 +30,15 @@ const apiClient = async (
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
+        ...headers,
       },
       body: body ? JSON.stringify(body) : null,
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      const errorMessage = errorData.message || `HTTP error! Status: ${response.status}`;
+      const errorMessage =
+        errorData.message || `HTTP error! Status: ${response.status}`;
       const validationErrors = errorData.errors || {};
 
       // Create a custom error object with details

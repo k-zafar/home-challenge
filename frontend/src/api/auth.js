@@ -1,4 +1,5 @@
 import apiClient from "../utils/apiClient";
+import { getToken } from "../utils/tokenUtils";
 
 /**
  * Registers a new user.
@@ -16,4 +17,14 @@ export const registerUser = async (userData) => {
  */
 export const loginUser = async (credentials) => {
   return apiClient("/login", {}, credentials, "POST");
+};
+
+/**
+ * Gets the current user's data.
+ * @returns {Promise<object>} - The response data from the API.
+ */
+export const getUser = async () => {
+  return apiClient("/user", {}, null, "GET", {
+    Authorization: `Bearer ${getToken("authToken")}`,
+  });
 };

@@ -28,6 +28,20 @@
   color: #61dafb;
 }
 
+/* Custom CSS for dropdown */
+.dropdown-menu {
+  background-color: #343a40; /* Dark background for dropdown menu */
+}
+
+.dropdown-item {
+  color: #ffffff; /* White text color */
+}
+
+.dropdown-item:hover {
+  background-color: #495057; /* Slightly lighter background on hover */
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

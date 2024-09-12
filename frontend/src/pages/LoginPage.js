@@ -1,6 +1,6 @@
-import Cookies from "js-cookie";
 import React, { useState } from "react";
 import { loginUser } from "../api/auth";
+import { setToken } from "../utils/tokenUtils";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Card, Container } from "react-bootstrap";
 
@@ -24,7 +24,7 @@ const LoginPage = () => {
       // Call the API to log in the user
       const response = await loginUser({ email, password });
       setSuccess("Login successful!");
-      Cookies.set("authToken", response.token, { expires: 1 });
+      setToken("authToken", response.token);
       navigate("/");
     } catch (error) {
       // Check if the error has validation details
