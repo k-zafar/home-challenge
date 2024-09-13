@@ -24,6 +24,14 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::post('/user/update', [Api\UserController::class, 'updateUser']);
     Route::post('/user/reset-password', [Api\UserController::class, 'resetPassword']);
+        
+    Route::get('sources', [Api\SourceController::class, 'index']);
+    Route::get('authors', [Api\AuthorController::class, 'index']);
+    Route::get('categories', [Api\CategorieController::class, 'index']);
+
+    Route::get('/user/sources', [Api\SourceController::class, 'getUserSoruces']);
+    Route::get('/user/authors', [Api\AuthorController::class, 'getUserAuthers']);
+    Route::get('/user/categories', [Api\CategorieController::class, 'getUserCategories']);
 
     //articles
     Route::get('articles', [Api\ArticleController::class, 'index']);
