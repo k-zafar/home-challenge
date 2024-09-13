@@ -55,6 +55,9 @@ const Header = () => {
                   <Dropdown.Item as={Link} to={`/user/${userData.id}/settings`}>
                     Account Settings
                   </Dropdown.Item>
+                  <Dropdown.Item as={Link} to={`/user/${userData.id}/preferences`}>
+                    Preferences
+                  </Dropdown.Item>
                   <Dropdown.Item onClick={handleLogout}>
                     Logout
                   </Dropdown.Item>

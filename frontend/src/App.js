@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import RegisterPage from "./pages/RegisterPage";
 import SettingsPage from "./pages/SettingsPage";
+import PreferencesPage from "./pages/PreferencesPage";
 import NewsViewPage from "./pages/NewsViewPage";
 import NewsListingPage from "./pages/NewsListingPage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/news" element={<NewsListingPage />} />
         <Route path="/news/:id" element={<NewsViewPage />} />
         <Route path="/user/:id/settings" element={<SettingsPage />} />
+        <Route path="/user/:id/preferences" element={<PreferencesPage />} />
       </Routes>
     </Router>
   );
