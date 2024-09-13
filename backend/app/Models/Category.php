@@ -11,6 +11,10 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name'
+    ];
+
     public function article(): HasOne
     {
         return $this->hasOne(Article::class);
@@ -19,5 +23,10 @@ class Category extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'category_user');
+    }
+
+    public function newsSource(): HasOne
+    {
+        return $this->hasOne(NewsSource::class);
     }
 }

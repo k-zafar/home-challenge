@@ -11,6 +11,10 @@ class Author extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name'
+    ];
+
     public function article(): HasOne
     {
         return $this->hasOne(Article::class);

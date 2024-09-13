@@ -10,6 +10,17 @@ class Article extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'description',
+        'content',
+        'publish_date',
+        'image_url',
+        'source_id',
+        'category_id',
+        'author_id'
+    ];
+
     public function source(): BelongsTo
     {
         return $this->belongsTo(Source::class);

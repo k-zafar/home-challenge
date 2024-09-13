@@ -13,7 +13,9 @@ class Source extends Model
 
     protected $fillable = [
         'id',
-        'name'
+        'name',
+        'from',
+        'to'
     ];
 
     public function article(): HasOne

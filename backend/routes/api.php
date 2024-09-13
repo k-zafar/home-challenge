@@ -24,4 +24,8 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::post('/user/update', [Api\UserController::class, 'updateUser']);
     Route::post('/user/reset-password', [Api\UserController::class, 'resetPassword']);
+
+    //articles
+    Route::get('articles', [Api\ArticleController::class, 'index']);
+    Route::post('articles/set-preferences', [Api\ArticleController::class, 'setPreferences']);
 });
