@@ -19,6 +19,10 @@ class Kernel extends ConsoleKernel
             ->after(function () use ($schedule) {
                 $schedule->command('hc:get-news-api-data')->runInBackground();
             });
+
+        $schedule->command('hc:get-guardian-api-data')->hourly()->runInBackground();
+
+        $schedule->command('hc:get-nytimes-api-data')->hourly()->runInBackground();
     }
 
     /**

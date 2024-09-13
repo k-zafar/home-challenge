@@ -2,13 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Article;
-use App\Models\Author;
 use App\Models\Category;
 use App\Models\NewsSource;
-use App\Models\Source;
-use Carbon\Carbon;
+use App\Services\ApiService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 use jcobhams\NewsApi\NewsApi;
 use jcobhams\NewsApi\NewsApiException;
 use GuzzleHttp\Exception\ClientException;
@@ -32,17 +30,19 @@ class GetNewsAPIData extends Command
      * @var NewsApi
      */
     private $newsapi;
+    private $apiService;
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ApiService $apiService)
     {
         parent::__construct();
 
         $this->newsapi = new NewsApi('d30b54c42d63409fb272aeb40d0f1950');
+        $this->apiService = $apiService;
     }
 
     /**
@@ -53,11 +53,11 @@ class GetNewsAPIData extends Command
      */
     public function handle()
     {
-        $source = $this->getSource();
+        $source = $this->apiService->getSource('NewsAPI.org');
 
         $from = $this->getFrom($source);
 
-        $source_id = $this->checkSource($source) ? $source->id : null;
+        $source_id = $this->apiService->checkSource($source) ? $source->id : null;
 
         try {
             $totalResults = $this->data($from, 1, $source_id);
@@ -75,7 +75,7 @@ class GetNewsAPIData extends Command
             }
         }
 
-        $this->updateSource($source);
+        $this->apiService->updateSource($source);
     }
 
     /**
@@ -86,32 +86,10 @@ class GetNewsAPIData extends Command
         $data = $this->newsapi->getEverything('q', null, null, null, $from, null, 'en', null, null, $page);
         if ($data && $data->status == 'ok') {
             foreach ($data->articles as $article) {
-                $this->createArticle($article, $source_id);
+                $this->setData($article, $source_id);
             }
         }
         return $data->totalResults;
-    }
-
-    private function getSource()
-    {
-        return Source::where('name', 'NewsAPI.org')->first();
-    }
-
-    private function getFrom($source): ?string
-    {
-        return $this->checkSource($source) && !empty($source->from) ? Carbon::parse($source->from)->format('c') : null;
-    }
-
-    private function updateSource($source)
-    {
-        if ($this->checkSource($source)) {
-            $source->update(['from' => $source->to, 'to' => now()]);
-        }
-    }
-
-    private function checkSource($source): bool
-    {
-        return (bool)$source;
     }
 
     private function getColumn($source): string
@@ -130,35 +108,34 @@ class GetNewsAPIData extends Command
         return $news_source ? $news_source->category_id : $this->getGeneralCategory();
     }
 
-    private function createAuthor($author)
-    {
-        return Author::firstOrCreate([
-            'name' => $author
-        ]);
-    }
-
     private function getGeneralCategory()
     {
         $category = Category::where('name', 'general')->first(['id']);
         return $category ? $category->id : null;
     }
 
-    private function createArticle($article, $source_id)
+    private function setData($article, $source_id)
     {
         $column = $this->getColumn($article->source);
-        Article::firstOrCreate(
-            [
-                'name' => $article->title
-            ],
-            [
-                'description' => !empty($article->description) ? $article->description : null,
-                'content' => !empty($article->content) ? $article->content : null,
-                'publish_date' => !empty($article->publishedAt) ? Carbon::parse($article->publishedAt)->format('Y-m-d H:i:s') : null,
-                'image_url' => !empty($article->urlToImage) ? $article->urlToImage : null,
-                'source_id' => $source_id,
-                'category_id' => $this->getCategory($column, $this->getValue($article->source, $column)),
-                'author_id' => !empty($article->author) ? $this->createAuthor($article->author)->id : null
-            ]
-        );
+        $unique['name'] = $article->title;
+        $data = [
+            'description' => !empty($article->description) ? $article->description : null,
+            'content' => !empty($article->content) ? $article->content : null,
+            'publish_date' => !empty($article->publishedAt) ? Carbon::parse($article->publishedAt)->format('Y-m-d H:i:s') : null,
+            'image_url' => !empty($article->urlToImage) ? $article->urlToImage : null,
+            'source_id' => $source_id,
+            'category_id' => $this->getCategory($column, $this->getValue($article->source, $column)),
+            'author_id' => !empty($article->author) ? $this->apiService->createAuthor($article->author)->id : null
+        ];
+        $this->apiService->createArticle($unique, $data);
+    }
+
+    private function getFrom($source): ?string
+    {
+        $from = $this->apiService->getFrom($source);
+        if (!empty($from)) {
+            $from = Carbon::parse($from)->format('c');
+        }
+        return $from;
     }
 }

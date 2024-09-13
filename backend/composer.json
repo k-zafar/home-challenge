@@ -14,7 +14,8 @@
         "laravel/passport": "^10.4",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "mews/purifier": "^3.4"
+        "mews/purifier": "^3.4",
+        "nonsoniyi/the-guardian-api-client": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
