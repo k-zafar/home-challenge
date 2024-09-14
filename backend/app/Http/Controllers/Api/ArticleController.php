@@ -42,6 +42,12 @@ class ArticleController extends Controller
         return response()->json($articles);
     }
 
+    public function show($id): JsonResponse
+    {
+        $article = Article::with('author')->find($id);
+        return response()->json($article);
+    }
+
     private function search($articles, $search)
     {
         return $articles->where(function ($query) use ($search) {

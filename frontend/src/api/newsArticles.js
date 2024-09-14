@@ -23,3 +23,17 @@ export const getnewsArticles = async (page, filter) => {
     }
   );
 };
+
+
+/**
+ * Gets the news article by id.
+ * @returns {Promise<object>} - The response data from the API.
+ */
+export const getNewsArticle = async (id) => {
+  return apiClient(
+    `/article/${id}`, {}, null, "GET",
+    {
+      Authorization: `Bearer ${getToken("authToken")}`,
+    }
+  );
+};

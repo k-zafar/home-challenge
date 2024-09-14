@@ -35,5 +35,6 @@ Route::middleware('auth:api')->group(function () {
 
     //articles
     Route::get('articles', [Api\ArticleController::class, 'index']);
+    Route::get('/article/{id}', [Api\ArticleController::class, 'show']);
     Route::post('articles/set-preferences', [Api\ArticleController::class, 'setPreferences']);
 });
