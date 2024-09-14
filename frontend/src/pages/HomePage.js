@@ -213,12 +213,6 @@ const HomePage = () => {
                         : article.description
                       : ''}
                   </Card.Text>
-                  <Card.Text>
-                    {article.publish_date
-                      ? article.publish_date 
-                      : ""
-                      }
-                  </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
