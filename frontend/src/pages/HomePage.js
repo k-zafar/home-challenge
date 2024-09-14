@@ -200,7 +200,7 @@ const HomePage = () => {
                 <Card.Body>
                   <Card.Title>
                     <Link
-                      to={`/news/${article.id}`}
+                      to={`/news-article/${article.id}`}
                       className="text-decoration-none text-dark"
                     >
                       {article.name}

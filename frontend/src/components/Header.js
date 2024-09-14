@@ -24,7 +24,7 @@ const Header = () => {
     navigate("/login");
   };
 
-  const isAuthenticated = getToken("authToken") !== undefined;
+  const isAuthenticated = getToken("authToken") !== "";
 
   return (
     <Navbar bg="dark" expand="lg" data-bs-theme="dark">
@@ -34,17 +34,6 @@ const Header = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link as={Link} to="/">
-              Home
-            </Nav.Link>
-            <Nav.Link as={Link} to="/news">
-              News
-            </Nav.Link>
-            <Nav.Link as={Link} to="/about">
-              About Us
-            </Nav.Link>
-          </Nav>
           {(isAuthenticated && userData) ? (
             <div className="ms-auto d-flex align-items-center">
               <Dropdown>
