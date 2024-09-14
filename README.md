@@ -45,6 +45,10 @@ Follow these steps to get the project up and running:
     docker compose exec backend php artisan hc:get-news-sources
     
     docker compose exec backend php artisan hc:get-news-api-data
+    
+    docker compose exec backend php artisan hc:get-nytimes-api-data
+    
+    docker compose exec backend php artisan hc:get-guardian-api-data
     ```
 
 

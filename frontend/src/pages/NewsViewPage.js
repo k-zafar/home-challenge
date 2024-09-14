@@ -22,6 +22,10 @@ const NewsViewPage = () => {
     fetchArticle(id);
   }, []);
 
+  const cleanContent = (content) => {
+    return content.replace(/ \[\+\d+\s*chars?\]$/, '');
+  };
+
   return (
     <Layout>
       <Container className="my-5">
@@ -39,7 +43,7 @@ const NewsViewPage = () => {
                 className="img-fluid mb-3 w-100"
               />
               <h5>{article.description}</h5>
-              <p>{article.content}</p>
+              <p>{cleanContent(article.content)}</p>
             </Col>
           )}
         </Row>
