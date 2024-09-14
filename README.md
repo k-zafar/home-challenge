@@ -34,8 +34,19 @@ Follow these steps to get the project up and running:
     ```sh
     docker compose exec backend composer install
 
+    docker compose exec backend php artisan migrate
+
+    docker compose exec backend php artisan db:seed --class=SourceSeeder
+
     docker compose exec backend php artisan passport:install
+
+    docker compose exec backend php artisan hc:get-news-categories
+
+    docker compose exec backend php artisan hc:get-news-sources
+    
+    docker compose exec backend php artisan hc:get-news-api-data
     ```
+
 
 4. **Install Frontend Dependencies**
 

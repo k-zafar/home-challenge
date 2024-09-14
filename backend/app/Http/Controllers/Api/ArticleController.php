@@ -26,7 +26,7 @@ class ArticleController extends Controller
         }
 
         if ($request->from && $request->to) {
-            $articles = $this->filterByDate($articles, $this->parseDate($request->from), $this->parseDate($request->to));
+            $articles = $this->filterByDate($articles, $this->parseDate($request->from), $this->parseDate($request->to, true));
         }
 
         if ($request->category) {
@@ -39,7 +39,7 @@ class ArticleController extends Controller
 
         $articles = $articles->paginate(10);
 
-        return response()->json(['data' => $articles]);
+        return response()->json($articles);
     }
 
     private function search($articles, $search)
@@ -51,9 +51,13 @@ class ArticleController extends Controller
         });
     }
 
-    private function parseDate($date): string
+    private function parseDate($date, $isEndDate = false): string
     {
-        return Carbon::parse($date)->format('Y-m-d');
+        $carbonDate = Carbon::parse($date);
+        $isEndDate ?
+            $carbonDate->setTime(23, 59, 59) : 
+            $carbonDate->setTime(0, 0, 0);
+        return $carbonDate->format('Y-m-d H:i:s');
     }
 
     private function filterByDate($articles, $from, $to)
