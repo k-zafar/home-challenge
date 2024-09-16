@@ -36,13 +36,13 @@ services:
       - app-network
 
   db:
-    image: mysql:5.7  
+    image: mysql:5.7
     container_name: mysql-db
     restart: always
     environment:
       MYSQL_DATABASE: homechallange
-      MYSQL_USER: homechallange  
-      MYSQL_PASSWORD: root  
+      MYSQL_USER: homechallange
+      MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "3306:3306"
