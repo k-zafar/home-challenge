@@ -36,10 +36,10 @@ const Header = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link as={Link} to="/">
-              Home
+              News Feed
             </Nav.Link>
             <Nav.Link as={Link} to="/news-articles">
-              News Articles
+              Search
             </Nav.Link>
           </Nav>
           {(isAuthenticated && userData) ? (
