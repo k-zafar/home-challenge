@@ -5,17 +5,21 @@ import { getToken } from "../utils/tokenUtils";
  * Gets the news articles data.
  * @returns {Promise<object>} - The response data from the API.
  */
-export const getnewsArticles = async (page, filter) => {
+export const getnewsArticles = async (page, path = "/home", filter = null) => {
+
+  const params = { page, path };
+
+  if (filter) {
+    params.to = filter.endDate;
+    params.source = filter.source;
+    params.search = filter.search;
+    params.from = filter.startDate;
+    params.category = filter.category;
+  }
+
   return apiClient(
     "/articles",
-    {
-      page,
-      search: filter.search,
-      source: filter.source,
-      category: filter.category,
-      from: filter.startDate,
-      to: filter.endDate,
-    },
+    params,
     null,
     "GET",
     {

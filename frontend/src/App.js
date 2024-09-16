@@ -8,6 +8,7 @@ import NewsViewPage from "./pages/NewsViewPage";
 import AuthRedirect from "./components/AuthRedirect";
 import PrivateRoute from "./components/PrivateRoute";
 import PreferencesPage from "./pages/PreferencesPage";
+import NewsArticlesPage from "./pages/NewsArticlesPage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<PrivateRoute element={<HomePage />} />} />
+        <Route path="/news-articles" element={<PrivateRoute element={<NewsArticlesPage />} />} />
         <Route
           path="/login"
           element={<AuthRedirect element={<LoginPage />} />}

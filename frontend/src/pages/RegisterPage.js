@@ -1,6 +1,6 @@
-import Cookies from "js-cookie";
 import React, { useState } from "react";
 import { registerUser } from "../api/auth";
+import { setToken } from "../utils/tokenUtils";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Card, Container } from "react-bootstrap";
 
@@ -31,7 +31,7 @@ const RegisterPage = () => {
         password_confirmation,
       });
       setSuccess("Registration successful!");
-      Cookies.set("authToken", response.token, { expires: 1 });
+      setToken("authToken", response.token);
       navigate("/");
     } catch (error) {
       // Check if the error has validation details

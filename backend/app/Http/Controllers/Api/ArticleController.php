@@ -17,9 +17,7 @@ class ArticleController extends Controller
 
         $articles = Article::latest('publish_date');
 
-        $articles = $this->userSources($user, $articles);
-        $articles = $this->userCategories($user, $articles);
-        $articles = $this->userAuthors($user, $articles);
+        $articles = $this->filterArticleWithUserPreferences($articles, $user, $request->path);
 
         if ($request->search) {
             $articles = $this->search($articles, strip_tags(clean($request->search)));
@@ -95,6 +93,17 @@ class ArticleController extends Controller
     {
         $sources = $user->sources()->pluck('id')->toArray();
         return count($sources) > 0 ? $articles->whereIn('source_id', $sources) : $articles;
+    }
+
+    private function filterArticleWithUserPreferences($articles, $user, $path)
+    {
+        if ($path == "/home") {
+            $articles = $this->userSources($user, $articles);
+            $articles = $this->userCategories($user, $articles);
+            $articles = $this->userAuthors($user, $articles);
+        }
+
+        return $articles;
     }
 
     private function userCategories($user, $articles)
